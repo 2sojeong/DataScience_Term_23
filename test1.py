@@ -142,13 +142,11 @@ train_df = pd.read_csv('data/train.csv')
 test_df =  pd.read_csv('data/test.csv')
 
 
-
-
 dirty_df = test_df.copy()
 
 
 
-clean_df = dirty_df[(dirty_df['Age'] > 10) & (dirty_df['Age'] < 100)]
+clean_df = dirty_df[(dirty_df['Age'] >= 10) & (dirty_df['Age'] <= 100)]
 
 
 print(len(dirty_df))
