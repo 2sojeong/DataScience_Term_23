@@ -15,30 +15,35 @@ features = ["Book-Author", "Publisher", "User-ID", "Age", "Location"]
 target = ["Book-Rating"]
 
 
-우리가 정한 피쳐 = 저자, 출판사, 나이, 장소
-타겟 = 점수
+# 피쳐 = 저자, 출판사, 나이, 장소
+# 타겟 = 점수
 
-분류
-유저 아이디 = 장소 점수 나이,
-책 아이디 = 저자, 출판사, 책 제목, 발간년도
+# (1) 데이터의 규모 줄이기
+# 1) 쓸모없는 컬럼 제거
+# 사용하지 않을 ID, book title은 전부 날린다.
+# book title 은 book-ID와 같음, book-ID를 사용, title column자체를 drop
+# 
+# 2) 더티 데이터, 미싱 데이터의 제거
+# 현 데이터에서 미싱 데이터는 없음
+# 더티 데이터 제거를 위해 데이터 상관관계 조사
+# 
+# 분류에 사용 가능한 피쳐
+# 유저 아이디 = 장소, 점수, 나이
+# 책 아이디 = 저자, 출판사, 책 제목, 발간년도
+# 
+# 책 제목, 출판사, 발간년도 => 더티 데이터가 많기에 책 아이디로 제목을 대체. 
+# 저자 => 북 아이디로 분류한 책 데이터 안에서 저자별로 묶는다?
 
-책 제목은 책아이디로 쓴다.
-나이 0 244 
+# 나이의 범위 0~244 => 10세부터 100세로 설정할 것, 나머지 row 드랍
+
+# 장소=> top 35인 location만 사용 
+# = 알파벳과 숫자만 들어간 데이터만 사용하여 더티 데이터 제거
+
+# Year=> -1.0 row drop 후 top35만 사용 
+
+장소 드랍, 나이 드랍, 책 제목(column)드랍하고, 
 
 
-나이는 10세부터 100세로 설정할 것
-장소는 특수문자 들어간 것 제외
-= 알파벳과 숫자로만 시작하는 데이터만 사용하여 더티 데이터 제거
-
-
-ID, book title은 전부 날린다.
-
-
-
-
-
-# 알파벳과 숫자의 아스키코드값을 기반으로 추출
-selected_data = data[data['Location'].str.replace(r'[^a-zA-Z0-9]', '').astype(bool)]
 
 
 
@@ -84,8 +89,6 @@ print("Mean Squared Error:", mse)
 
 
 # 더티 데이터 처리 - null값, 중복값, 미싱 벨류, 
-
-
 train_df.isnull()
 
 
@@ -128,6 +131,34 @@ train_df.isnull()
 # 예측 결과 출력
 # print(y_pred)
 
+
+
+
+# train.csv 파일 읽기
+train_df = pd.read_csv('data/train.csv')
+
+
+
+test_df =  pd.read_csv('data/test.csv')
+
+
+
+
+dirty_df = test_df.copy()
+
+
+
+clean_df = dirty_df[(dirty_df['Age'] > 10) & (dirty_df['Age'] < 100)]
+
+
+print(len(dirty_df))
+
+
+
+print(len(clean_df))
+
+
+clean_df['Age']
 
 
 
