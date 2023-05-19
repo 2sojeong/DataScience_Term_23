@@ -1,7 +1,9 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import OneHotEncoder
+
+
+
 
 # train.csv 파일 읽기
 train_df = pd.read_csv('train.csv')
@@ -37,6 +39,44 @@ ID, book title은 전부 날린다.
 
 # 알파벳과 숫자의 아스키코드값을 기반으로 추출
 selected_data = data[data['Location'].str.replace(r'[^a-zA-Z0-9]', '').astype(bool)]
+
+
+
+
+
+# LabelEncoder를 사용하여 범주형 변수를 숫자로 인코딩
+le = LabelEncoder()
+for feature in features:
+    data[feature] = le.fit_transform(data[feature])
+
+# 피처와 타깃 데이터 분리
+X = data[features]
+y = data[target]
+
+# 학습 데이터와 테스트 데이터 분리
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 선형 회귀 모델 학습
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# 테스트 데이터로 예측 수행
+y_pred = model.predict(X_test)
+
+# 평균 제곱 오차 계산
+mse = mean_squared_error(y_test, y_pred)
+print("Mean Squared Error:", mse)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
