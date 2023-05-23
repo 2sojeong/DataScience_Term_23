@@ -125,21 +125,6 @@ mse = mean_squared_error(y_test, y_pred)
 print("Mean Squared Error:", mse)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 더티 데이터 처리 - null값, 중복값, 미싱 벨류, 
 
 
